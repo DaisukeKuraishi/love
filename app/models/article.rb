@@ -1,4 +1,4 @@
 class Article < ApplicationRecord
-  validates :name, presence: true
-  validates :title, presence: true
+  has_many :responses,dependent: :destroy
+  validates :content,:name,:title, presence: true
 end

@@ -6,6 +6,7 @@
     <%= article.title %>
   </h2>
   <p>
+    1
     <%= article.name %>
     <%= article.email %>
     <%= article.updated_at.strftime("%Y/%m/%d %H:%M:%S") %>
@@ -13,4 +14,54 @@
   <p>
     <%= simple_format article.content %>
   </p>
+
+  <% count = 2%>
+  <% article.responses.each do |response| %>
+    <p>
+      <%= count %>
+      <%= response.name %>
+      <%= response.email %>
+      <%= response.updated_at.strftime("%Y/%m/%d %H:%M:%S") %>
+    </p>
+    <p>
+      <%= simple_format response.content %>
+    </p>
+    <% count = count + 1 %>
+  <% end %>
+
+  <%= form_with(model: @response, local: true) do |form| %>
+    <% if @response.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@response.errors.count, "error") %> prohibited this @response from being saved:</h2>
+
+        <ul>
+        <% @response.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= form.label :name %>
+      <%= form.text_field :name, id: :@response_name %>
+    </div>
+
+    <div class="field">
+      <%= form.label :email %>
+      <%= form.text_field :email, id: :@response_email %>
+    </div>
+
+    <div class="field">
+      <%= form.label :content %>
+      <%= form.text_area :content, id: :@response_content %>
+    </div>
+
+      <%= form.hidden_field :article_id, :value => article.id %>
+
+    <div class="actions">
+      <%= form.submit %>
+　  </div>
+  <% end %>
+
 <% end %>
