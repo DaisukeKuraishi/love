@@ -15,6 +15,9 @@ class ResponsesController < ApplicationController
   # GET /responses/new
   def new
     @response = Response.new
+    @response.name = session[:name] if session[:name]
+    @response.email = session[:email] if session[:email]
+
   end
 
   # GET /responses/1/edit
@@ -24,7 +27,11 @@ class ResponsesController < ApplicationController
   # POST /responses
   # POST /responses.json
   def create
+    session[:updated_at] = Time.now unless session[:updated_at]
+    else
     @response = Response.new(response_params)
+    session[:name] = @response.name
+    session[:email] = @response.email
 
     respond_to do |format|
       if @response.save
